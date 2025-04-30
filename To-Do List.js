@@ -5,6 +5,7 @@ const taskList2 = $("#task-list2");
 const currentDate = new Date();
 const nextDate = new Date(currentDate);
 nextDate.setDate(currentDate.getDate() + 1);
+let checkboxCounter = 0;
 
 function updateList(taskInput, taskList) {
   const task = taskInput.val().trim();
@@ -15,7 +16,17 @@ function updateList(taskInput, taskList) {
     const del_btn = document.createElement("button");
     const edit_btn = document.createElement("button");
     const checkbox = document.createElement("input");
+    const div = document.createElement("div");
+    const label = document.createElement("label");
+    const taskText = document.createElement("span");
+
     checkbox.type = "checkbox";
+    checkbox.classList.add("checkbox");
+
+    const uniqueId = `checkbox-${checkboxCounter++}`;
+    checkbox.setAttribute("id", uniqueId);
+    label.setAttribute("for", uniqueId);
+
 
     del_btn.innerHTML = "-";
     edit_btn.innerHTML = "+";
@@ -23,10 +34,19 @@ function updateList(taskInput, taskList) {
     li.classList.add("task-item");
     del_btn.classList.add("delete-btn");
     edit_btn.classList.add("edit-btn");
-    checkbox.classList.add("checkbox");
 
-    li.appendChild(checkbox);
-    li.append(task);
+    
+    div.classList.add("round");
+    label.classList.add("checkbox-label");
+
+    taskText.classList.add("task-text"); // Add a class to the <span>
+    taskText.textContent = task;
+
+    div.appendChild(checkbox);
+    div.appendChild(label);
+
+    li.appendChild(div);
+    li.appendChild(taskText);
     li.appendChild(edit_btn);
     li.appendChild(del_btn);
 
@@ -66,9 +86,19 @@ $(document).on("click", ".delete-btn", function () {
   }
 });
 
+$(document).on("click", ".checkbox", function () {
+  const li = $(this).closest("li"); 
+
+  if ($(this).is(":checked")) {
+     li.addClass("task-done");
+  } else {
+    li.removeClass("task-done");
+  }
+});
+
 $(document).on("click", ".edit-btn", function () {
   const li = $(this).parent();
-  const currentText = li.contents().get(1).nodeValue.trim();
+  const currentText = li.find(".task-text").text().trim();
 
   console.log(currentText);
 
@@ -82,9 +112,9 @@ $(document).on("click", ".edit-btn", function () {
   saveBtn.innerHTML = "Save";
   saveBtn.classList.add("save-btn");
 
-  li.contents().get(1).nodeValue = "";
-    li.find(".checkbox").after(input);
-  input.after(saveBtn);
+  li.find(".task-text").remove(); // Remove the <span> containing the task text
+  li.find(".round").after(input); // Add the input field after the checkbox container
+  $(input).after(saveBtn);
 
   $(this).remove();
 });
@@ -98,14 +128,12 @@ $(document).on("click", ".save-btn", function () {
   edit_btn.classList.add("edit-btn");
 
   if (newText !== "") {
-    li
-      .contents()
-      .filter(function () {
-        return this.nodeType === 3; // Node.TEXT_NODE
-      })
-      .get(0).nodeValue = newText;
+    const taskText = document.createElement("span");
+    taskText.classList.add("task-text");
+    taskText.textContent = newText; // Set the new task text
 
-    console.log(newText);
+    li.find(".edit-input").remove(); // Remove the input field
+    li.find(".round").after(taskText); // Add the <span> back to the <li>
   } else {
     alert("Task cannot be empty");
   }
