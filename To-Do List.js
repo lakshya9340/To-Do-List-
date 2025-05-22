@@ -28,8 +28,8 @@ function updateList(taskInput, taskList) {
     label.setAttribute("for", uniqueId);
 
 
-    del_btn.innerHTML = "-";
-    edit_btn.innerHTML = "+";
+    del_btn.innerHTML = "🗑️";
+    edit_btn.innerHTML = "✏️";
 
     li.classList.add("task-item");
     del_btn.classList.add("delete-btn");
@@ -91,15 +91,22 @@ $(document).on("click", ".checkbox", function () {
 
   if ($(this).is(":checked")) {
      li.addClass("task-done");
+    li.find(".edit-btn").remove();
   } else {
     li.removeClass("task-done");
+    const edit_btn = document.createElement("button");
+    edit_btn.innerHTML = "✏️";
+    edit_btn.classList.add("edit-btn");
+    li.find(".delete-btn").before(edit_btn);
   }
 });
 
 $(document).on("click", ".edit-btn", function () {
   const li = $(this).parent();
   const currentText = li.find(".task-text").text().trim();
-
+  li.addClass("double-div");
+  li.find(".checkbox").prop("disabled", true);
+  li.find(".round").addClass("less-opacity");
   console.log(currentText);
 
   const input = document.createElement("input");
@@ -109,7 +116,7 @@ $(document).on("click", ".edit-btn", function () {
   input.focus();
 
   const saveBtn = document.createElement("button");
-  saveBtn.innerHTML = "Save";
+  saveBtn.innerHTML = "Save 💾";
   saveBtn.classList.add("save-btn");
 
   li.find(".task-text").remove(); // Remove the <span> containing the task text
@@ -124,7 +131,8 @@ $(document).on("click", ".save-btn", function () {
   const input = li.find(".edit-input");
   const newText = input.val().trim();
   const edit_btn = document.createElement("button");
-  edit_btn.innerHTML = "+";
+  li.find(".checkbox").prop("disabled", false);
+  edit_btn.innerHTML = "✏️";
   edit_btn.classList.add("edit-btn");
 
   if (newText !== "") {
@@ -139,6 +147,8 @@ $(document).on("click", ".save-btn", function () {
   }
 
   li.find(".delete-btn").before(edit_btn);
+  li.find(".round").removeClass("less-opacity");
   input.remove();
+  li.removeClass("double-div");
   $(this).remove();
 });

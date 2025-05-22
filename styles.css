@@ -10,7 +10,7 @@ html{
 
 .container{
     background-image: url('./images/notebook.png');
-    border: 5px solid black;
+    border: 2px solid black;
     height : auto;
     width: 800px;
     display: flex;
@@ -18,6 +18,7 @@ html{
     justify-content: center;
     align-items: center;
     border-radius: 5%;
+    box-shadow: 5px 5px 10px black ;
     
 }
 body {
@@ -40,12 +41,13 @@ body {
     background-color:orangered ;
     margin-top: 35px;
     margin-bottom: 15px;
+    box-shadow: 0 2px 5px 0 black;
 }
 ul {
     list-style-type: none;
     padding: 0; /* Remove default padding */
     margin: 0; /* Remove default margin */
-    width: 80%; /* Ensure the list takes the full width of the container */
+    width: 85%; /* Ensure the list takes the full width of the container */
     text-align: left; /* Align text to the left */
 }
 
@@ -65,6 +67,7 @@ input{
     font-size: 2em; 
     border-radius: 15px;
     margin-bottom: 50px;  
+    box-shadow: 0 2px 5px 0 black;
 }
 
 .edit-input{
@@ -201,9 +204,19 @@ input.checkbox{
     word-wrap: break-word; /* Break long words if necessary */
     overflow-wrap: break-word; /* Ensure long words break properly */
     padding: 0px; /* Add some padding for better readability */
-  }
+    height: auto;
+}
+
 
 .task-done{
     text-decoration: line-through;
     color:gray;
 }  
+
+.double-div{
+    height: calc(1em * 2.0);
+}
+
+.less-opacity{
+    opacity: 75%;
+}
